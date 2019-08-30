@@ -109,33 +109,28 @@ function actionPage() {
         search = document.querySelector('.search-wrapper_input'),
         searchButton = document.querySelector('.search-btn');
 
-    saleCheckbox.addEventListener('click', () => {
-        cards.forEach((card) => {
-            if (saleCheckbox.checked) {
-                if (!card.querySelector('.card-sale')) {
-                    card.parentNode.style.display = 'none';
-                }
-            } else {
-                card.parentNode.style.display = '';
-            }
-         })
-     }); 
-     
-    function filterPrice() {
+    saleCheckbox.addEventListener('click', filter); 
+    min.addEventListener('change', filter); 
+    max.addEventListener('change', filter); 
+ 
+    
+    function filter() {
         cards.forEach((card) => {
             const cardPrice = card.querySelector('.card-price');
-            const price = parseFloat(cardPrice.textContent);  
+            const price = parseFloat(cardPrice.textContent);
+            const sale = card.querySelector('.card-sale');
 
             if ((min.value && price < min.value) || (max.value && price > max.value)) {
+                card.parentNode.style.display = 'none';
+            } else if (saleCheckbox.checked && !sale) {
                 card.parentNode.style.display = 'none';
             } else {
                 card.parentNode.style.display = '';
             }
-        });
-    } 
+        })
+    }
      
-    min.addEventListener('change', filterPrice); 
-    max.addEventListener('change', filterPrice); 
+    
 
     searchButton.addEventListener('click', () => {
         const searchText = new RegExp(search.value.trim(), 'i');
@@ -148,7 +143,11 @@ function actionPage() {
             }
         });
     });
+
+    
 }
+
+
 
     // END FILTER
 
